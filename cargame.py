@@ -16,10 +16,15 @@ center = posx,posy = 450,450
 
 #sideways 70 110 290 250
 #upwards 335 25  155 205
-rotation2 = 335 * picorrection
-rotation1 = 25  * picorrection
-rotation4 = 155 * picorrection
-rotation3 = 205 * picorrection
+rotation1 = 25  * picorrection #Rear Left
+rotation2 = 335 * picorrection #Rear Right
+rotation4 = 155 * picorrection #Front Right
+rotation3 = 205 * picorrection #Front Left
+
+wheelfldeg = 215 * picorrection
+wheelfrdeg = 145 * picorrection
+wheelrldeg = 0
+wheelrrdeg = 0
 
 
 
@@ -28,12 +33,14 @@ rotation3 = 205 * picorrection
 while environment == True:
 	screen.fill((0,0,0))
 	
-	#rotate the car body
-	rotation1 = rotation1 + 0.001
-	rotation2 = rotation2 + 0.001
-	rotation3 = rotation3 + 0.001
-	rotation4 = rotation4 + 0.001
-	
+	#rotate the car entity
+	rotation1  = rotation1  + 0.001
+	rotation2  = rotation2  + 0.001
+	rotation3  = rotation3  + 0.001
+	rotation4  = rotation4  + 0.001
+	wheelfldeg = wheelfldeg + 0.001
+	wheelfrdeg = wheelfrdeg + 0.001
+	#rotate the wheels with the corners of the body for deformation purposes	
 	if rotation1   > superpi:
 		rotation1   = 0
 	
@@ -44,22 +51,32 @@ while environment == True:
 		rotation3   = 0
 	if rotation4   > superpi:
 		rotation4   = 0
+		wheelfl     = 0
 
-	#point1 = (posx-25+(int(math.cos(rotation)*posx-25)),posy-50+(int(math.sin(rotation)*scale)))
+	#the body
 	point1 = int(math.sin(rotation1)*100+ posx), int(math.cos(rotation1)*100 + posy)
 	point2 = int(math.sin(rotation2)*100+ posx), int(math.cos(rotation2)*100 + posy)
 	point3 = int(math.sin(rotation3)*100+ posx), int(math.cos(rotation3)*100 + posy)
 	point4 = int(math.sin(rotation4)*100+ posx), int(math.cos(rotation4)*100 + posy)
-	#for wheels (posx-25+(int(math.cos(rotation)*scale)),posy+50+(int(math.sin(rotation)*scale)))
-	#int(math.cos(rotation)*50+posx) #DO NOT DELETE
-	
-	
+		
+	#draw stuff
 	pygame.draw.polygon(screen, (255,255,255), [point1,point2,point3,point4])
 	pygame.draw.circle(screen, (255,0,0), center, 3)
 	pygame.draw.circle(screen, (255,0,0), point1, 3)
 
+	#wheels
+	wheelfl = int(math.sin(wheelfldeg)*70+ posx), int(math.cos(wheelfldeg)*70 + posy)
+	wheelfr = int(math.sin(wheelfrdeg)*70+ posx), int(math.cos(wheelfrdeg)*70 + posy)
+	
+	pygame.draw.circle(screen, (0,255,0), wheelfl, 3)
+	pygame.draw.circle(screen, (0,255,0), wheelfr, 3)
+	
+
 	pygame.display.flip()
 		
-
-
-
+#==========
+#Extra Code
+#==========
+#point1 = (posx-25+(int(math.cos(rotation)*posx-25)),posy-50+(int(math.sin(rotation)*scale)))
+#for wheels (posx-25+(int(math.cos(rotation)*scale)),posy+50+(int(math.sin(rotation)*scale)))
+	#int(math.cos(rotation)*50+posx) #DO NOT DELETE
